@@ -288,6 +288,88 @@ export default function Schedule() {
     }
   };
 
+  // Calculate overall work summary (only completed work shifts)
+  const calculateOverallWorkSummary = () => {
+    const today = new Date();
+    const completedWorkSchedules = schedules.filter(schedule => {
+      const scheduleDate = new Date(schedule.date);
+      const isPastOrToday = scheduleDate <= today;
+      return schedule.type === 'work' && isPastOrToday;
+    });
+
+    // Group by date to count unique work days
+    const workDaysByDate = new Map<string, ScheduleData[]>();
+    let totalHours = 0;
+    let totalRegularHours = 0;
+    let totalNightDifferentialHours = 0;
+
+    completedWorkSchedules.forEach(schedule => {
+      const dateKey = schedule.date.split('T')[0]; // Get YYYY-MM-DD format
+      
+      if (!workDaysByDate.has(dateKey)) {
+        workDaysByDate.set(dateKey, []);
+      }
+      workDaysByDate.get(dateKey)!.push(schedule);
+    });
+
+    // Calculate hours and pay for each work day
+    workDaysByDate.forEach((daySchedules: ScheduleData[], date: string) => {
+      daySchedules.forEach((schedule: ScheduleData) => {
+        const scheduleDate = schedule.date.includes('T') ? schedule.date.split('T')[0] : schedule.date;
+        const startTime = new Date(`${scheduleDate}T${schedule.startTime}:00`);
+        const endTime = new Date(`${scheduleDate}T${schedule.endTime}:00`);
+        
+        const hours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+        
+        if (!isNaN(hours) && hours > 0) {
+          totalHours += hours;
+          
+          // Calculate night differential hours
+          let nightHours = 0;
+          let currentTime = new Date(startTime);
+          
+          while (currentTime < endTime) {
+            const currentHour = currentTime.getHours();
+            
+            if (currentHour >= 22 || currentHour < 6) {
+              const nextHour = new Date(currentTime);
+              nextHour.setHours(currentHour + 1, 0, 0, 0);
+              
+              const hourEnd = nextHour > endTime ? endTime : nextHour;
+              const hourDuration = (hourEnd.getTime() - currentTime.getTime()) / (1000 * 60 * 60);
+              
+              nightHours += hourDuration;
+            }
+            
+            currentTime.setHours(currentTime.getHours() + 1, 0, 0, 0);
+          }
+          
+          totalNightDifferentialHours += nightHours;
+        }
+      });
+    });
+
+    totalRegularHours = Math.max(0, totalHours - totalNightDifferentialHours);
+
+    // Calculate pay
+    const regularRate = 1000; // ¥1000 per hour
+    const nightDifferentialRate = 1250; // ¥1250 per hour
+    
+    const regularPay = totalRegularHours * regularRate;
+    const nightDifferentialPay = totalNightDifferentialHours * nightDifferentialRate;
+    const totalPay = regularPay + nightDifferentialPay;
+
+    return {
+      totalWorkDays: workDaysByDate.size,
+      totalHours: Math.round(totalHours * 100) / 100,
+      totalRegularHours: Math.round(totalRegularHours * 100) / 100,
+      totalNightDifferentialHours: Math.round(totalNightDifferentialHours * 100) / 100,
+      totalPay: Math.round(totalPay),
+      regularPay: Math.round(regularPay),
+      nightDifferentialPay: Math.round(nightDifferentialPay)
+    };
+  };
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setSelectedSchedule(null);
@@ -379,6 +461,217 @@ export default function Schedule() {
             </Button>
           </Box>
         </Paper>
+      </motion.div>
+
+      {/* Work Summary Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+      >
+        {(() => {
+          const workSummary = calculateOverallWorkSummary();
+          
+          return (
+            <Paper
+              elevation={0}
+              sx={{
+                mb: 4,
+                borderRadius: 4,
+                background: 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                overflow: 'hidden',
+              }}
+            >
+              <Box
+                sx={{
+                  p: 3,
+                  background: 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)',
+                  color: 'white',
+                }}
+              >
+                <Typography variant="h6" sx={{ fontWeight: 600, textAlign: 'center' }}>
+                  💼 Overall Work Summary (Completed Shifts Only)
+                </Typography>
+              </Box>
+              
+              <Box sx={{ p: 3 }}>
+                <Grid container spacing={3}>
+                  {/* Total Work Days */}
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 3,
+                        borderRadius: 3,
+                        background: 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)',
+                        color: 'white',
+                        textAlign: 'center',
+                        '&:hover': {
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 8px 25px rgba(33, 150, 243, 0.3)',
+                        },
+                        transition: 'all 0.3s ease',
+                      }}
+                    >
+                      <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                        {workSummary.totalWorkDays}
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
+                        Work Days Completed
+                      </Typography>
+                    </Paper>
+                  </Grid>
+
+                  {/* Total Hours */}
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 3,
+                        borderRadius: 3,
+                        background: 'linear-gradient(135deg, #ff9800 0%, #f57c00 100%)',
+                        color: 'white',
+                        textAlign: 'center',
+                        '&:hover': {
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 8px 25px rgba(255, 152, 0, 0.3)',
+                        },
+                        transition: 'all 0.3s ease',
+                      }}
+                    >
+                      <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                        {workSummary.totalHours}h
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
+                        Total Hours Worked
+                      </Typography>
+                    </Paper>
+                  </Grid>
+
+                  {/* Hours Breakdown */}
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 3,
+                        borderRadius: 3,
+                        background: 'linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%)',
+                        color: 'white',
+                        textAlign: 'center',
+                        '&:hover': {
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 8px 25px rgba(156, 39, 176, 0.3)',
+                        },
+                        transition: 'all 0.3s ease',
+                      }}
+                    >
+                      <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
+                        Regular: {workSummary.totalRegularHours}h
+                      </Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                        Night: {workSummary.totalNightDifferentialHours}h
+                      </Typography>
+                      <Typography variant="caption" sx={{ opacity: 0.8, display: 'block', mt: 0.5 }}>
+                        Hours Breakdown
+                      </Typography>
+                    </Paper>
+                  </Grid>
+
+                  {/* Total Salary */}
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 3,
+                        borderRadius: 3,
+                        background: 'linear-gradient(135deg, #4caf50 0%, #388e3c 100%)',
+                        color: 'white',
+                        textAlign: 'center',
+                        '&:hover': {
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 8px 25px rgba(76, 175, 80, 0.3)',
+                        },
+                        transition: 'all 0.3s ease',
+                      }}
+                    >
+                      <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                        ¥{workSummary.totalPay.toLocaleString()}
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
+                        Total Earnings
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                </Grid>
+
+                {/* Detailed Pay Breakdown */}
+                {workSummary.totalWorkDays > 0 && (
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      mt: 3,
+                      p: 3,
+                      borderRadius: 3,
+                      background: alpha('#4caf50', 0.1),
+                      border: '1px solid',
+                      borderColor: alpha('#4caf50', 0.2),
+                    }}
+                  >
+                    <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: '#4caf50' }}>
+                      💰 Detailed Pay Breakdown
+                    </Typography>
+                    
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={4}>
+                        <Box textAlign="center">
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                            Regular Pay
+                          </Typography>
+                          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                            ¥{workSummary.regularPay.toLocaleString()}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            ({workSummary.totalRegularHours}h × ¥1,000)
+                          </Typography>
+                        </Box>
+                      </Grid>
+                      
+                      <Grid item xs={12} sm={4}>
+                        <Box textAlign="center">
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                            Night Differential
+                          </Typography>
+                          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                            ¥{workSummary.nightDifferentialPay.toLocaleString()}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            ({workSummary.totalNightDifferentialHours}h × ¥1,250)
+                          </Typography>
+                        </Box>
+                      </Grid>
+                      
+                      <Grid item xs={12} sm={4}>
+                        <Box textAlign="center">
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                            Average per Day
+                          </Typography>
+                          <Typography variant="h6" sx={{ fontWeight: 600, color: '#4caf50' }}>
+                            ¥{Math.round(workSummary.totalPay / Math.max(workSummary.totalWorkDays, 1)).toLocaleString()}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            Based on {workSummary.totalWorkDays} work days
+                          </Typography>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                )}
+              </Box>
+            </Paper>
+          );
+        })()}
       </motion.div>
 
       <Grid container spacing={3}>
@@ -900,16 +1193,25 @@ export default function Schedule() {
         <DialogActions sx={{ p: 3, pt: 0 }}>
           {selectedSchedule && (
             <Button 
-              onClick={() => handleDelete(selectedSchedule._id)} 
+              onClick={() => {
+                const confirmMessage = `Are you sure you want to delete this ${selectedSchedule.type} shift?\n\nDate: ${format(new Date(selectedSchedule.date), 'MMM dd, yyyy')}\nTime: ${selectedSchedule.startTime} - ${selectedSchedule.endTime}`;
+                if (window.confirm(confirmMessage)) {
+                  handleDelete(selectedSchedule._id);
+                }
+              }}
+              startIcon={<Delete />}
               sx={{
                 color: '#f44336',
+                borderColor: '#f44336',
                 borderRadius: 2,
                 '&:hover': {
                   backgroundColor: alpha('#f44336', 0.1),
+                  borderColor: '#d32f2f',
                 },
               }}
+              variant="outlined"
             >
-              Delete
+              Delete Schedule
             </Button>
           )}
           <Button 
@@ -1120,7 +1422,7 @@ export default function Schedule() {
                           }}
                         >
                           <Box display="flex" justifyContent="space-between" alignItems="center">
-                            <Box>
+                            <Box flex={1}>
                               <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                                 {schedule.title}
                               </Typography>
@@ -1128,15 +1430,50 @@ export default function Schedule() {
                                 🕐 {schedule.startTime} - {schedule.endTime}
                               </Typography>
                             </Box>
-                            <Chip
-                              label={schedule.type}
-                              size="small"
-                              sx={{
-                                backgroundColor: eventTypeColors[schedule.type],
-                                color: 'white',
-                                borderRadius: 2,
-                              }}
-                            />
+                            <Box display="flex" alignItems="center" gap={1}>
+                              <Chip
+                                label={schedule.type}
+                                size="small"
+                                sx={{
+                                  backgroundColor: eventTypeColors[schedule.type],
+                                  color: 'white',
+                                  borderRadius: 2,
+                                  mr: 1,
+                                }}
+                              />
+                              <IconButton
+                                size="small"
+                                onClick={() => {
+                                  setOpenSummaryDialog(false);
+                                  handleEdit(schedule);
+                                }}
+                                sx={{
+                                  color: '#667eea',
+                                  '&:hover': {
+                                    backgroundColor: alpha('#667eea', 0.1),
+                                  },
+                                }}
+                              >
+                                <Edit />
+                              </IconButton>
+                              <IconButton
+                                size="small"
+                                onClick={async () => {
+                                  if (window.confirm(`Are you sure you want to delete this ${schedule.type} shift (${schedule.startTime} - ${schedule.endTime})?`)) {
+                                    await handleDelete(schedule._id);
+                                    setOpenSummaryDialog(false);
+                                  }
+                                }}
+                                sx={{
+                                  color: '#f44336',
+                                  '&:hover': {
+                                    backgroundColor: alpha('#f44336', 0.1),
+                                  },
+                                }}
+                              >
+                                <Delete />
+                              </IconButton>
+                            </Box>
                           </Box>
                         </Box>
                       ))}
