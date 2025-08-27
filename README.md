@@ -1,161 +1,350 @@
-# TimeCard Management System
+<div align="center">
+  
+  <!-- Animated Header -->
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,2,12,24&height=300&section=header&text=TimeCard%20Management%20System&fontSize=50&fontAlignY=35&desc=Workforce%20Management%20Made%20Simple&descAlignY=55&animation=fadeIn" alt="header"/>
+  
+  <!-- Badges -->
+  <p>
+    <img src="https://img.shields.io/badge/TypeScript-98.9%25-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
+    <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge" alt="Status">
+    <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="License">
+    <img src="https://img.shields.io/github/stars/JohnGabriel1998/TimeCardSystem?style=for-the-badge&color=yellow" alt="Stars">
+  </p>
 
-A comprehensive time card management system built with the MERN stack (MongoDB, Express, React, Node.js) using TypeScript and Vite.
+  <!-- Animated Demo GIF -->
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&pause=1000&color=6366F1&center=true&vCenter=true&width=600&lines=Track+Employee+Hours+⏰;Calculate+Salaries+💰;Generate+Reports+📊;Manage+Schedules+📅;Real-time+Dashboard+🎯" alt="Typing SVG">
+  
+</div>
 
-## Features
+<br/>
 
-- **Time Tracking**: Clock in/out functionality with automatic calculation
-- **Salary Calculation**: 
-  - Regular hours: ¥1000/hour
-  - Night shift (after 10 PM): ¥1250/hour
-  - Automatic computation based on work hours
-- **Schedule Management**: Create, view, edit, and delete schedules with calendar view
-- **Reports**: Comprehensive reports with charts and export functionality
-- **Modern UI**: Beautiful design using Material-UI and Framer Motion
-- **Full CRUD Operations**: Complete Create, Read, Update, Delete functionality
+<!-- Feature Cards with Animations -->
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="https://img.icons8.com/fluency/96/000000/clock.png" width="60" alt="Time Tracking"/>
+        <br/><b>⏱️ Time Tracking</b>
+      </td>
+      <td align="center">
+        <img src="https://img.icons8.com/fluency/96/000000/money-bag.png" width="60" alt="Salary"/>
+        <br/><b>💵 Salary Management</b>
+      </td>
+      <td align="center">
+        <img src="https://img.icons8.com/fluency/96/000000/analytics.png" width="60" alt="Analytics"/>
+        <br/><b>📈 Analytics Dashboard</b>
+      </td>
+      <td align="center">
+        <img src="https://img.icons8.com/fluency/96/000000/calendar.png" width="60" alt="Schedule"/>
+        <br/><b>📅 Schedule Events</b>
+      </td>
+    </tr>
+  </table>
+</div>
 
-## Tech Stack
+---
 
-### Backend
-- Node.js with Express
-- TypeScript
-- MongoDB with Mongoose
-- JWT Authentication
-- Date-fns for date handling
+## ✨ Features
 
-### Frontend
-- React 18 with TypeScript
-- Vite for fast development
-- Material-UI for components
-- FullCalendar for schedule view
-- Recharts for data visualization
-- Framer Motion for animations
-- Zustand for state management
-- Axios for API calls
+<table>
+<tr>
+<td width="50%">
 
-## Installation
+### 🎯 Core Features
+- 🔐 **Secure Authentication**
+- ⏰ **Clock In/Out System**
+- 📊 **Real-time Dashboard**
+- 💰 **Salary Calculations**
+- 📈 **Weekly/Monthly Reports**
+- 🗓️ **Schedule Management**
+
+</td>
+<td width="50%">
+
+### 🚀 Advanced Features
+- 📱 **Responsive Design**
+- 🌙 **Dark/Light Mode**
+- 📧 **Email Notifications**
+- 📥 **Export Reports (PDF/Excel)**
+- 🔄 **Auto-sync Data**
+- 👥 **Multi-user Support**
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🖼️ Dashboard Preview
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Dashboard-Preview-6366F1?style=for-the-badge" alt="Dashboard"/>
+</div>
+
+<details>
+<summary><b>📸 Click to see Dashboard Screenshots</b></summary>
+
+### Main Dashboard
+- **Welcome Screen** with personalized greeting
+- **Clock Status** indicator (Currently Clocked In/Out)
+- **Quick Stats** showing:
+  - 📊 Total Hours: `9.98h`
+  - 💵 Current Month Salary: `¥10,500`
+  - 📈 Previous Month: `¥72,750`
+  - 📅 Scheduled Events: `17`
+  - 🔴 Status: `Clocked Out`
+
+### Analytics Views
+- **Weekly Hours Overview** - Bar chart visualization
+- **Monthly Salary History** - Trend analysis
+- **Daily Earnings Breakdown** - Regular vs Night Shift pay
+
+</details>
+
+---
+
+## 🚀 Quick Start Guide
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (local or cloud instance)
-- npm or yarn
 
-### Backend Setup
+<div align="center">
 
-1. Navigate to the server directory:
+![Node.js](https://img.shields.io/badge/Node.js-v18.0+-339933?style=flat-square&logo=node.js&logoColor=white)
+![npm](https://img.shields.io/badge/npm-v9.0+-CB3837?style=flat-square&logo=npm&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-v5.0+-3178C6?style=flat-square&logo=typescript&logoColor=white)
+
+</div>
+
+### 📦 Installation Steps
+
+<table>
+<tr>
+<td>
+
+#### Step 1️⃣: Clone Repository
 ```bash
-cd server
+git clone https://github.com/JohnGabriel1998/TimeCardSystem.git
+cd TimeCardSystem
 ```
 
-2. Install dependencies:
+</td>
+</tr>
+<tr>
+<td>
+
+#### Step 2️⃣: Install Dependencies
 ```bash
 npm install
+# or
+yarn install
 ```
 
-3. Create a `.env` file and update the MongoDB connection string:
+</td>
+</tr>
+<tr>
+<td>
+
+#### Step 3️⃣: Environment Setup
+```bash
+# Create .env file
+cp .env.example .env
+
+# Edit with your configuration
+nano .env
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+#### Step 4️⃣: Database Setup
+```bash
+# Run migrations
+npm run migrate
+
+# Seed sample data (optional)
+npm run seed
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+#### Step 5️⃣: Start Development Server
+```bash
+npm run dev
+# App runs on http://localhost:3000
+```
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🔧 Configuration
+
+### Environment Variables
+
 ```env
-MONGODB_URI=mongodb://localhost:27017/timecard_management
-JWT_SECRET=your_jwt_secret_key_here
-PORT=5000
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/timecard
+
+# Authentication
+JWT_SECRET=your-secret-key
+JWT_EXPIRE=7d
+
+# Email Service
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-password
+
+# API Keys
+STRIPE_KEY=sk_test_...
+GOOGLE_MAPS_API=AIza...
 ```
 
-4. Start the development server:
+---
+
+## 📚 API Documentation
+
+### Authentication Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/auth/login` | User login |
+| `POST` | `/api/auth/register` | User registration |
+| `POST` | `/api/auth/logout` | User logout |
+| `GET` | `/api/auth/profile` | Get user profile |
+
+### TimeCard Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/timecard/clock-in` | Clock in |
+| `POST` | `/api/timecard/clock-out` | Clock out |
+| `GET` | `/api/timecard/status` | Get clock status |
+| `GET` | `/api/timecard/history` | Get timecard history |
+
+### Reports Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/reports/weekly` | Weekly report |
+| `GET` | `/api/reports/monthly` | Monthly report |
+| `GET` | `/api/reports/salary` | Salary calculation |
+| `POST` | `/api/reports/export` | Export to PDF/Excel |
+
+---
+
+## 🏗️ Project Structure
+
+```
+TimeCardSystem/
+├── 📁 src/
+│   ├── 📁 components/
+│   │   ├── Dashboard.tsx
+│   │   ├── TimeCard.tsx
+│   │   ├── Reports.tsx
+│   │   └── Schedule.tsx
+│   ├── 📁 services/
+│   │   ├── auth.service.ts
+│   │   ├── timecard.service.ts
+│   │   └── report.service.ts
+│   ├── 📁 utils/
+│   │   ├── helpers.ts
+│   │   └── constants.ts
+│   ├── 📁 styles/
+│   │   └── globals.css
+│   └── 📄 App.tsx
+├── 📁 public/
+├── 📁 tests/
+├── 📄 package.json
+├── 📄 tsconfig.json
+└── 📄 README.md
+```
+
+---
+
+## 🧪 Testing
+
 ```bash
-npm run dev
+# Run all tests
+npm test
+
+# Run with coverage
+npm run test:coverage
+
+# Run specific test file
+npm test -- Dashboard.test.tsx
+
+# E2E testing
+npm run test:e2e
 ```
 
-### Frontend Setup
+---
 
-1. Navigate to the client directory:
-```bash
-cd client
-```
+## 📱 Mobile Support
 
-2. Install dependencies:
-```bash
-npm install
-```
+<div align="center">
+  <img src="https://img.shields.io/badge/iOS-Compatible-000000?style=for-the-badge&logo=apple&logoColor=white" alt="iOS">
+  <img src="https://img.shields.io/badge/Android-Compatible-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android">
+  <img src="https://img.shields.io/badge/PWA-Enabled-5A29E4?style=for-the-badge&logo=pwa&logoColor=white" alt="PWA">
+</div>
 
-3. Start the development server:
-```bash
-npm run dev
-```
+---
 
-The application will be available at `http://localhost:3000`
+## 🤝 Contributing
 
-## Usage
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-1. **Register/Login**: Create a new account or login with existing credentials
-2. **Clock In/Out**: Use the TimeCard page to clock in and out
-3. **View Dashboard**: See your work summary, earnings, and charts
-4. **Manage Schedule**: Add events to your calendar
-5. **Generate Reports**: View detailed reports and export data
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## API Endpoints
+---
 
-### Authentication
-- POST `/api/auth/register` - Register new user
-- POST `/api/auth/login` - Login user
+## 📊 Stats & Activity
 
-### TimeCards
-- GET `/api/timecards` - Get all time cards
-- POST `/api/timecards/clockin` - Clock in
-- POST `/api/timecards/clockout` - Clock out
-- PUT `/api/timecards/:id` - Update time card
-- DELETE `/api/timecards/:id` - Delete time card
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=JohnGabriel1998&repo=TimeCardSystem&show_icons=true&theme=tokyonight" alt="Stats">
+</div>
 
-### Schedules
-- GET `/api/schedules` - Get all schedules
-- POST `/api/schedules` - Create schedule
-- PUT `/api/schedules/:id` - Update schedule
-- DELETE `/api/schedules/:id` - Delete schedule
+---
 
-## Project Structure
+## 📝 License
 
-```
-timecard-management-system/
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── components/    # Reusable components
-│   │   ├── pages/        # Page components
-│   │   ├── store/        # Zustand store
-│   │   └── theme.ts      # MUI theme configuration
-│   └── package.json
-├── server/                # Express backend
-│   ├── src/
-│   │   ├── models/       # Mongoose models
-│   │   ├── routes/       # API routes
-│   │   ├── middleware/   # Express middleware
-│   │   └── index.ts      # Server entry point
-│   └── package.json
-└── README.md
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Features in Detail
+---
 
-### Time Tracking
-- Real-time clock in/out
-- Automatic break calculation
-- Status indicator (clocked in/out)
+## 👨‍💻 Author
 
-### Salary Calculation
-- Regular hours: ¥1000/hour (6 AM - 10 PM)
-- Night shift: ¥1250/hour (10 PM - 6 AM)
-- Automatic calculation on clock out
-- Monthly and weekly summaries
+<div align="center">
+  <img src="https://github.com/JohnGabriel1998.png" width="100" style="border-radius: 50%;" alt="Author"/>
+  <h3>John Gabriel Bagacina</h3>
+  <p>
+    <a href="https://github.com/JohnGabriel1998">
+      <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+    </a>
+  </p>
+</div>
 
-### Schedule Management
-- Full calendar view
-- Different event types (work, meeting, break, holiday)
-- Color-coded events
-- Drag and drop support
+---
 
-### Reports
-- Daily, weekly, monthly, and yearly reports
-- Visual charts for better insights
-- Export to CSV
-- Print functionality
+## 🌟 Support
 
-## License
+If you find this project helpful, please consider giving it a ⭐️!
 
-MIT License
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,2,12,24&height=100&section=footer" alt="footer"/>
+</div>
