@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
-  Card,
   CardContent,
   Typography,
   Button,
@@ -29,7 +28,6 @@ import {
   Divider,
   Avatar,
   alpha,
-  useTheme,
 } from '@mui/material';
 import {
   Login as LoginIcon,
@@ -43,13 +41,15 @@ import {
   History,
   Upload,
   Download,
+  Schedule,
+  Timer,
 } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import api from '../lib/axios';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, isToday, addMonths, subMonths, parse, isValid, setHours, setMinutes } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, addMonths, subMonths, parse, isValid } from 'date-fns';
 
 interface TimeCardData {
   _id: string;
@@ -597,18 +597,53 @@ export default function TimeCard() {
       <Box
         sx={{
           minHeight: '100vh',
-          background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+          background: '#f5f5f5',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <Box textAlign="center">
-          <CircularProgress size={60} sx={{ mb: 2 }} />
-          <Typography variant="h6" color="text.secondary">
-            Loading TimeCard...
-          </Typography>
-        </Box>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Paper
+            elevation={0}
+            sx={{
+              p: 6,
+              borderRadius: 4,
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(20px)',
+              textAlign: 'center',
+              minWidth: 300,
+            }}
+          >
+            <Avatar
+              sx={{
+                width: 80,
+                height: 80,
+                mb: 3,
+                mx: 'auto',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              }}
+            >
+              <Timer sx={{ fontSize: 40 }} />
+            </Avatar>
+            <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
+              Loading TimeCard
+            </Typography>
+            <CircularProgress 
+              sx={{ 
+                color: '#667eea',
+                mb: 2,
+              }} 
+            />
+            <Typography variant="body2" color="text.secondary">
+              Preparing your time tracking...
+            </Typography>
+          </Paper>
+        </motion.div>
       </Box>
     );
   }
@@ -617,10 +652,11 @@ export default function TimeCard() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+        background: '#f5f5f5',
+        p: 3,
       }}
     >
-      {/* Header Section */}
+      {/* Modern Header Section */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -631,67 +667,91 @@ export default function TimeCard() {
           sx={{
             p: 4,
             mb: 4,
-            borderRadius: 4,
-            background: 'rgba(255, 255, 255, 0.9)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
+            borderRadius: 3,
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(20px)',
+            },
           }}
         >
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Box display="flex" alignItems="center">
-              <Avatar
-                sx={{
-                  width: 60,
-                  height: 60,
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  mr: 3,
-                }}
-              >
-                <AccessTime sx={{ fontSize: 30 }} />
-              </Avatar>
-              <Box>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    fontWeight: 700,
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    backgroundClip: 'text',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    mb: 0.5,
-                  }}
-                >
-                  Time Card Management
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
-                  Track and manage your working hours
-                </Typography>
-              </Box>
-            </Box>
-            <Paper
-              elevation={0}
-              sx={{
-                p: 2,
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                borderRadius: 3,
-                color: 'white',
-                textAlign: 'right',
-              }}
-            >
-              <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                {safeFormat(currentTime, 'HH:mm:ss')}
-              </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                {safeFormat(currentTime, 'EEEE, MMM dd, yyyy')}
-              </Typography>
-            </Paper>
+          <Box position="relative" zIndex={1}>
+            <Grid container spacing={3} alignItems="center">
+              <Grid item xs={12} md={8}>
+                <Box display="flex" alignItems="center">
+                  <Avatar
+                    sx={{
+                      width: 70,
+                      height: 70,
+                      background: 'rgba(255, 255, 255, 0.2)',
+                      backdropFilter: 'blur(10px)',
+                      mr: 3,
+                      border: '2px solid rgba(255, 255, 255, 0.3)',
+                    }}
+                  >
+                    <Schedule sx={{ fontSize: '2rem' }} />
+                  </Avatar>
+                  <Box>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        fontWeight: 700,
+                        mb: 0.5,
+                        textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                      }}
+                    >
+                      Time Card Management ⏰
+                    </Typography>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        opacity: 0.9,
+                        fontWeight: 400,
+                      }}
+                    >
+                      Track and manage your working hours
+                    </Typography>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Box textAlign="right">
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      p: 3,
+                      background: 'rgba(255, 255, 255, 0.15)',
+                      backdropFilter: 'blur(20px)',
+                      borderRadius: 2,
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                    }}
+                  >
+                    <Typography variant="h3" sx={{ fontWeight: 700, mb: 0.5 }}>
+                      {safeFormat(currentTime, 'HH:mm:ss')}
+                    </Typography>
+                    <Typography variant="body1" sx={{ opacity: 0.9 }}>
+                      {safeFormat(currentTime, 'EEEE, MMM dd, yyyy')}
+                    </Typography>
+                  </Paper>
+                </Box>
+              </Grid>
+            </Grid>
           </Box>
         </Paper>
       </motion.div>
 
       <Grid container spacing={3}>
-        {/* Clock In/Out Status Card */}
-        <Grid item xs={12} md={4}>
+        {/* Enhanced Clock In/Out Status Card */}
+        <Grid item xs={12} lg={4}>
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -700,39 +760,55 @@ export default function TimeCard() {
             <Paper
               elevation={0}
               sx={{
-                borderRadius: 4,
+                borderRadius: 3,
                 background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 overflow: 'hidden',
+                height: 'fit-content',
               }}
             >
+              {/* Status Header */}
               <Box
                 sx={{
                   p: 3,
                   background: activeCard
-                    ? 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)'
-                    : 'linear-gradient(135deg, #FF5722 0%, #E64A19 100%)',
+                    ? 'linear-gradient(135deg, #a8edea 0%, #4facfe 100%)'
+                    : 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
                   color: 'white',
                   textAlign: 'center',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                  },
                 }}
               >
-                <Avatar
-                  sx={{
-                    width: 60,
-                    height: 60,
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                    margin: '0 auto 16px',
-                  }}
-                >
-                  <AccessTime sx={{ fontSize: 30 }} />
-                </Avatar>
-                <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                  {activeCard ? '🟢 Currently Clocked In' : '🔴 Currently Clocked Out'}
-                </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  {activeCard ? 'You are actively working' : 'Ready to start your shift'}
-                </Typography>
+                <Box position="relative" zIndex={1}>
+                  <Avatar
+                    sx={{
+                      width: 70,
+                      height: 70,
+                      backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                      margin: '0 auto 16px',
+                      border: '2px solid rgba(255, 255, 255, 0.3)',
+                    }}
+                  >
+                    <Timer sx={{ fontSize: 35 }} />
+                  </Avatar>
+                  <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                    {activeCard ? '🟢 Currently Active' : '⭕ Currently Inactive'}
+                  </Typography>
+                  <Typography variant="body1" sx={{ opacity: 0.95, fontWeight: 500 }}>
+                    {activeCard ? 'You are actively tracking time' : 'Ready to start your work session'}
+                  </Typography>
+                </Box>
               </Box>
 
               <CardContent sx={{ p: 3 }}>
@@ -1137,7 +1213,7 @@ export default function TimeCard() {
                 <ToggleButtonGroup
                   value={viewMode}
                   exclusive
-                  onChange={(e, newMode) => newMode && setViewMode(newMode)}
+                  onChange={(_, newMode) => newMode && setViewMode(newMode)}
                   sx={{
                     '& .MuiToggleButton-root': {
                       borderRadius: 2,

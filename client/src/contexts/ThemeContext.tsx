@@ -39,17 +39,17 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     palette: {
       mode: 'light',
       primary: {
-        main: '#667eea',
-        light: '#8fa7f0',
-        dark: '#4f5bb7',
+        main: '#43e97b',
+        light: '#6ef39e',
+        dark: '#2eb85c',
       },
       secondary: {
-        main: '#764ba2',
-        light: '#9b6bc9',
-        dark: '#5a3681',
+        main: '#38f9d7',
+        light: '#5cfbe6',
+        dark: '#1de6c1',
       },
       background: {
-        default: '#f5f7fa',
+        default: '#f5f5f5',
         paper: '#ffffff',
       },
       text: {
@@ -61,7 +61,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+            background: '#f5f5f5',
             minHeight: '100vh',
           },
         },
@@ -73,18 +73,18 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     palette: {
       mode: 'dark',
       primary: {
-        main: '#667eea',
-        light: '#8fa7f0',
-        dark: '#4f5bb7',
+        main: '#43e97b',
+        light: '#6ef39e',
+        dark: '#2eb85c',
       },
       secondary: {
-        main: '#764ba2',
-        light: '#9b6bc9',
-        dark: '#5a3681',
+        main: '#38f9d7',
+        light: '#5cfbe6',
+        dark: '#1de6c1',
       },
       background: {
-        default: '#0a0a0a',
-        paper: '#1a1a1a',
+        default: '#121212',
+        paper: '#1e1e1e',
       },
       text: {
         primary: '#ffffff',
@@ -95,7 +95,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
+            background: 'linear-gradient(135deg, #121212 0%, #1a1a2e 100%)',
             minHeight: '100vh',
           },
         },

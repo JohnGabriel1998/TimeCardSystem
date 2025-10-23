@@ -15,9 +15,22 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Paper,
   alpha,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  FormControlLabel,
+  Switch,
+  Grid,
+  Paper,
   Chip,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem as SelectMenuItem,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -28,6 +41,16 @@ import {
   Logout,
   Person,
   Settings,
+  Save,
+  Email,
+  Phone,
+  LocationOn,
+  Work,
+  Notifications,
+  Security,
+  Palette,
+  Language,
+  Close,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../store/authStore';
@@ -60,9 +83,32 @@ const menuItems = [
 export default function Layout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [profileDialogOpen, setProfileDialogOpen] = useState(false);
+  const [preferencesDialogOpen, setPreferencesDialogOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuthStore();
+
+  // Profile form state
+  const [profileForm, setProfileForm] = useState({
+    username: user?.username || '',
+    email: user?.email || '',
+    phone: '',
+    location: '',
+    jobTitle: '',
+    department: '',
+  });
+
+  // Preferences state
+  const [preferences, setPreferences] = useState({
+    notifications: true,
+    emailNotifications: false,
+    darkMode: false,
+    language: 'en',
+    timezone: 'UTC',
+    dateFormat: 'MM/dd/yyyy',
+    autoLogout: 30,
+  });
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -81,6 +127,44 @@ export default function Layout() {
     navigate('/login');
   };
 
+  const handleProfileClick = () => {
+    setProfileDialogOpen(true);
+    setAnchorEl(null);
+  };
+
+  const handlePreferencesClick = () => {
+    setPreferencesDialogOpen(true);
+    setAnchorEl(null);
+  };
+
+  const handleProfileFormChange = (field: string, value: string) => {
+    setProfileForm(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handlePreferenceChange = (field: string, value: any) => {
+    setPreferences(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSaveProfile = () => {
+    // Here you would typically make an API call to save the profile
+    console.log('Saving profile:', profileForm);
+    // For now, just close the dialog
+    setProfileDialogOpen(false);
+  };
+
+  const handleSavePreferences = () => {
+    // Here you would typically make an API call to save preferences
+    console.log('Saving preferences:', preferences);
+    // For now, just close the dialog
+    setPreferencesDialogOpen(false);
+  };
+
   const getCurrentPageTitle = () => {
     const currentItem = menuItems.find((item) => item.path === location.pathname);
     return currentItem?.text || 'Personal TimeCard';
@@ -90,33 +174,17 @@ export default function Layout() {
     <Box
       sx={{
         height: '100%',
-        background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
+        background: '#ffffff',
         position: 'relative',
-        overflow: 'hidden',
+        borderRight: '1px solid #f0f0f0',
       }}
     >
-      {/* Background Pattern */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: `
-            radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%)
-          `,
-        }}
-      />
-      
       {/* Header Section */}
       <Box
         sx={{
           p: 3,
-          position: 'relative',
-          zIndex: 1,
+          pb: 2,
+          borderBottom: '1px solid #f5f5f5',
         }}
       >
         <motion.div
@@ -124,39 +192,38 @@ export default function Layout() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Box display="flex" alignItems="center" mb={2}>
-            <Avatar
+          <Box display="flex" alignItems="center" mb={3}>
+            <Box
               sx={{
-                width: 50,
-                height: 50,
-                background: 'rgba(255, 255, 255, 0.15)',
-                backdropFilter: 'blur(10px)',
+                width: 45,
+                height: 45,
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 mr: 2,
-                border: '2px solid rgba(255, 255, 255, 0.2)',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  background: 'rgba(255, 255, 255, 0.25)',
-                  transform: 'scale(1.05)',
-                },
+                boxShadow: '0 4px 20px rgba(102, 126, 234, 0.3)',
               }}
             >
-              <AccessTime sx={{ color: 'white', fontSize: 24 }} />
-            </Avatar>
+              <AccessTime sx={{ color: 'white', fontSize: 22 }} />
+            </Box>
             <Box>
               <Typography 
                 variant="h6" 
                 sx={{ 
-                  color: 'white', 
+                  color: '#1a1a1a', 
                   fontWeight: 700,
-                  fontSize: '1.2rem',
+                  fontSize: '1.1rem',
+                  lineHeight: 1.2,
                 }}
               >
-                Personal TimeCard
+                TimeCard
               </Typography>
               <Typography 
                 variant="caption" 
                 sx={{ 
-                  color: 'rgba(255, 255, 255, 0.8)',
+                  color: '#888',
                   fontSize: '0.75rem',
                 }}
               >
@@ -165,95 +232,149 @@ export default function Layout() {
             </Box>
           </Box>
           
-          {/* User Card */}
-          <Paper
-            elevation={0}
+          {/* User Profile */}
+          <Box
             sx={{
-              p: 2,
-              background: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(15px)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              borderRadius: 3,
-              color: 'white',
+              p: 2.5,
+              background: '#f8f9fa',
+              borderRadius: '16px',
+              border: '1px solid #f0f0f0',
               transition: 'all 0.3s ease',
               '&:hover': {
-                background: 'rgba(255, 255, 255, 0.15)',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                background: '#f5f6fa',
+                transform: 'translateY(-1px)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
               },
             }}
           >
             <Box display="flex" alignItems="center">
               <Avatar
                 sx={{
-                  width: 40,
-                  height: 40,
-                  background: 'rgba(255, 255, 255, 0.2)',
+                  width: 36,
+                  height: 36,
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   mr: 2,
                   fontWeight: 600,
+                  fontSize: '0.9rem',
                 }}
               >
                 {user?.username?.charAt(0).toUpperCase() || 'U'}
               </Avatar>
               <Box>
-                <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, color: '#1a1a1a', fontSize: '0.85rem' }}>
                   {user?.username || 'User'}
                 </Typography>
-                <Chip
-                  label="Active"
-                  size="small"
+                <Box
                   sx={{
-                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
-                    color: '#4caf50',
-                    fontSize: '0.7rem',
-                    height: 20,
-                    fontWeight: 600,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    background: '#e8f5e8',
+                    borderRadius: '8px',
+                    px: 1,
+                    py: 0.3,
+                    mt: 0.5,
                   }}
-                />
+                >
+                  <Box
+                    sx={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      background: '#4caf50',
+                      mr: 0.5,
+                    }}
+                  />
+                  <Typography variant="caption" sx={{ color: '#4caf50', fontSize: '0.7rem', fontWeight: 600 }}>
+                    Online
+                  </Typography>
+                </Box>
               </Box>
             </Box>
-          </Paper>
+          </Box>
         </motion.div>
       </Box>
 
-      <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)', mx: 2 }} />
-
       {/* Navigation Menu */}
-      <List sx={{ px: 2, py: 2, position: 'relative', zIndex: 1 }}>
-        {menuItems.map((item, index) => (
-          <motion.div
-            key={item.text}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 + 0.3, duration: 0.4 }}
-          >
-            <ListItemButton 
-              component={motion.div}
-              whileHover={{ scale: 1.02, x: 4 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => navigate(item.path)}
-              sx={{ 
-                borderRadius: 2, 
-                mb: 1,
-                backgroundColor: location.pathname === item.path ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
-                backdropFilter: location.pathname === item.path ? 'blur(10px)' : 'none',
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  backdropFilter: 'blur(10px)',
-                }
-              }}
+      <Box sx={{ px: 2, py: 3 }}>
+        <Typography 
+          variant="caption" 
+          sx={{ 
+            color: '#888', 
+            fontWeight: 600, 
+            fontSize: '0.75rem', 
+            mb: 2, 
+            display: 'block',
+            px: 1,
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+          }}
+        >
+          Navigation
+        </Typography>
+        <List sx={{ p: 0 }}>
+          {menuItems.map((item, index) => (
+            <motion.div
+              key={item.text}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 + 0.3, duration: 0.4 }}
             >
-              <ListItemIcon sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText 
-                primary={item.text} 
-                sx={{ color: 'rgba(255, 255, 255, 0.9)' }}
-              />
-            </ListItemButton>
-          </motion.div>
-        ))}
-      </List>
+              <ListItemButton 
+                component={motion.div}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => navigate(item.path)}
+                sx={{ 
+                  borderRadius: '12px', 
+                  mb: 1,
+                  py: 1.5,
+                  px: 2,
+                  backgroundColor: location.pathname === item.path ? '#f0f4ff' : 'transparent',
+                  border: location.pathname === item.path ? '1px solid #e3edff' : '1px solid transparent',
+                  position: 'relative',
+                  '&:hover': {
+                    backgroundColor: '#f8faff',
+                    border: '1px solid #f0f4ff',
+                  },
+                  '&:before': location.pathname === item.path ? {
+                    content: '""',
+                    position: 'absolute',
+                    left: 0,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: 3,
+                    height: '60%',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    borderRadius: '0 4px 4px 0',
+                  } : {},
+                }}
+              >
+                <ListItemIcon 
+                  sx={{ 
+                    color: location.pathname === item.path ? '#667eea' : '#666',
+                    minWidth: 40,
+                    '& svg': {
+                      fontSize: 20,
+                    }
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText 
+                  primary={item.text} 
+                  sx={{ 
+                    color: location.pathname === item.path ? '#667eea' : '#333',
+                    '& .MuiTypography-root': {
+                      fontWeight: location.pathname === item.path ? 600 : 500,
+                      fontSize: '0.9rem',
+                    }
+                  }}
+                />
+              </ListItemButton>
+            </motion.div>
+          ))}
+        </List>
+      </Box>
 
       {/* Footer */}
       <Box
@@ -262,20 +383,22 @@ export default function Layout() {
           bottom: 0,
           left: 0,
           right: 0,
-          p: 2,
-          background: 'rgba(0, 0, 0, 0.1)',
-          backdropFilter: 'blur(10px)',
+          p: 3,
+          borderTop: '1px solid #f5f5f5',
+          background: '#fafafa',
         }}
       >
         <Typography 
           variant="caption" 
           sx={{ 
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: '#aaa',
             textAlign: 'center',
             display: 'block',
+            fontSize: '0.7rem',
+            fontWeight: 500,
           }}
         >
-          © 2025 Personal TimeCard
+          © 2025 Personal TimeCard v1.0
         </Typography>
       </Box>
     </Box>
@@ -434,6 +557,7 @@ export default function Layout() {
             </Box>
             
             <MenuItem
+              onClick={handleProfileClick}
               sx={{
                 py: 1.5,
                 '&:hover': {
@@ -448,6 +572,7 @@ export default function Layout() {
             </MenuItem>
             
             <MenuItem
+              onClick={handlePreferencesClick}
               sx={{
                 py: 1.5,
                 '&:hover': {
@@ -550,6 +675,426 @@ export default function Layout() {
           </motion.div>
         </Box>
       </Box>
+
+      {/* Profile Settings Dialog */}
+      <Dialog 
+        open={profileDialogOpen} 
+        onClose={() => setProfileDialogOpen(false)}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 4,
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(20px)',
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          pb: 1,
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: 'white',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          <Box display="flex" alignItems="center">
+            <Person sx={{ mr: 2 }} />
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              Profile Settings
+            </Typography>
+          </Box>
+          <IconButton 
+            onClick={() => setProfileDialogOpen(false)}
+            sx={{ color: 'white' }}
+          >
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        
+        <DialogContent sx={{ p: 4 }}>
+          <Grid container spacing={3}>
+            {/* Profile Picture Section */}
+            <Grid item xs={12}>
+              <Paper 
+                elevation={0}
+                sx={{ 
+                  p: 3, 
+                  borderRadius: 3, 
+                  background: '#f8f9fa',
+                  textAlign: 'center' 
+                }}
+              >
+                <Avatar
+                  sx={{
+                    width: 100,
+                    height: 100,
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    margin: '0 auto 16px',
+                    fontSize: '2.5rem',
+                    fontWeight: 600,
+                  }}
+                >
+                  {user?.username?.charAt(0).toUpperCase() || 'U'}
+                </Avatar>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                  {user?.username || 'User'}
+                </Typography>
+                <Chip 
+                  label="Personal Account" 
+                  size="small" 
+                  sx={{ 
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    color: 'white' 
+                  }} 
+                />
+              </Paper>
+            </Grid>
+
+            {/* Personal Information */}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Username"
+                value={profileForm.username}
+                onChange={(e) => handleProfileFormChange('username', e.target.value)}
+                InputProps={{
+                  startAdornment: <Person sx={{ mr: 1, color: '#667eea' }} />
+                }}
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Email Address"
+                type="email"
+                value={profileForm.email}
+                onChange={(e) => handleProfileFormChange('email', e.target.value)}
+                InputProps={{
+                  startAdornment: <Email sx={{ mr: 1, color: '#667eea' }} />
+                }}
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Phone Number"
+                value={profileForm.phone}
+                onChange={(e) => handleProfileFormChange('phone', e.target.value)}
+                InputProps={{
+                  startAdornment: <Phone sx={{ mr: 1, color: '#667eea' }} />
+                }}
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Location"
+                value={profileForm.location}
+                onChange={(e) => handleProfileFormChange('location', e.target.value)}
+                InputProps={{
+                  startAdornment: <LocationOn sx={{ mr: 1, color: '#667eea' }} />
+                }}
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Job Title"
+                value={profileForm.jobTitle}
+                onChange={(e) => handleProfileFormChange('jobTitle', e.target.value)}
+                InputProps={{
+                  startAdornment: <Work sx={{ mr: 1, color: '#667eea' }} />
+                }}
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Department"
+                value={profileForm.department}
+                onChange={(e) => handleProfileFormChange('department', e.target.value)}
+                InputProps={{
+                  startAdornment: <Work sx={{ mr: 1, color: '#667eea' }} />
+                }}
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+
+        <DialogActions sx={{ p: 3, pt: 0 }}>
+          <Button 
+            onClick={() => setProfileDialogOpen(false)}
+            sx={{ borderRadius: 2 }}
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSaveProfile}
+            variant="contained"
+            startIcon={<Save />}
+            sx={{
+              borderRadius: 2,
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+              },
+            }}
+          >
+            Save Changes
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Preferences Dialog */}
+      <Dialog 
+        open={preferencesDialogOpen} 
+        onClose={() => setPreferencesDialogOpen(false)}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 4,
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(20px)',
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          pb: 1,
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: 'white',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          <Box display="flex" alignItems="center">
+            <Settings sx={{ mr: 2 }} />
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              Preferences
+            </Typography>
+          </Box>
+          <IconButton 
+            onClick={() => setPreferencesDialogOpen(false)}
+            sx={{ color: 'white' }}
+          >
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        
+        <DialogContent sx={{ p: 4 }}>
+          <Grid container spacing={4}>
+            {/* Notification Settings */}
+            <Grid item xs={12}>
+              <Paper 
+                elevation={0}
+                sx={{ 
+                  p: 3, 
+                  borderRadius: 3, 
+                  background: '#f8f9fa',
+                  border: '1px solid #e9ecef',
+                }}
+              >
+                <Box display="flex" alignItems="center" mb={2}>
+                  <Notifications sx={{ mr: 2, color: '#667eea' }} />
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    Notifications
+                  </Typography>
+                </Box>
+                
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={preferences.notifications}
+                      onChange={(e) => handlePreferenceChange('notifications', e.target.checked)}
+                    />
+                  }
+                  label="Enable push notifications"
+                  sx={{ mb: 1, display: 'block' }}
+                />
+                
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={preferences.emailNotifications}
+                      onChange={(e) => handlePreferenceChange('emailNotifications', e.target.checked)}
+                    />
+                  }
+                  label="Enable email notifications"
+                  sx={{ display: 'block' }}
+                />
+              </Paper>
+            </Grid>
+
+            {/* Appearance Settings */}
+            <Grid item xs={12}>
+              <Paper 
+                elevation={0}
+                sx={{ 
+                  p: 3, 
+                  borderRadius: 3, 
+                  background: '#f8f9fa',
+                  border: '1px solid #e9ecef',
+                }}
+              >
+                <Box display="flex" alignItems="center" mb={2}>
+                  <Palette sx={{ mr: 2, color: '#667eea' }} />
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    Appearance
+                  </Typography>
+                </Box>
+                
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={preferences.darkMode}
+                      onChange={(e) => handlePreferenceChange('darkMode', e.target.checked)}
+                      disabled
+                    />
+                  }
+                  label="Dark mode (Coming Soon)"
+                  sx={{ mb: 2, display: 'block' }}
+                />
+
+                <FormControl fullWidth sx={{ mb: 2 }}>
+                  <InputLabel>Date Format</InputLabel>
+                  <Select
+                    value={preferences.dateFormat}
+                    label="Date Format"
+                    onChange={(e) => handlePreferenceChange('dateFormat', e.target.value)}
+                  >
+                    <SelectMenuItem value="MM/dd/yyyy">MM/DD/YYYY</SelectMenuItem>
+                    <SelectMenuItem value="dd/MM/yyyy">DD/MM/YYYY</SelectMenuItem>
+                    <SelectMenuItem value="yyyy-MM-dd">YYYY-MM-DD</SelectMenuItem>
+                  </Select>
+                </FormControl>
+              </Paper>
+            </Grid>
+
+            {/* Language & Region */}
+            <Grid item xs={12}>
+              <Paper 
+                elevation={0}
+                sx={{ 
+                  p: 3, 
+                  borderRadius: 3, 
+                  background: '#f8f9fa',
+                  border: '1px solid #e9ecef',
+                }}
+              >
+                <Box display="flex" alignItems="center" mb={2}>
+                  <Language sx={{ mr: 2, color: '#667eea' }} />
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    Language & Region
+                  </Typography>
+                </Box>
+                
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth>
+                      <InputLabel>Language</InputLabel>
+                      <Select
+                        value={preferences.language}
+                        label="Language"
+                        onChange={(e) => handlePreferenceChange('language', e.target.value)}
+                      >
+                        <SelectMenuItem value="en">English</SelectMenuItem>
+                        <SelectMenuItem value="es">Spanish</SelectMenuItem>
+                        <SelectMenuItem value="fr">French</SelectMenuItem>
+                        <SelectMenuItem value="ja">Japanese</SelectMenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth>
+                      <InputLabel>Timezone</InputLabel>
+                      <Select
+                        value={preferences.timezone}
+                        label="Timezone"
+                        onChange={(e) => handlePreferenceChange('timezone', e.target.value)}
+                      >
+                        <SelectMenuItem value="UTC">UTC</SelectMenuItem>
+                        <SelectMenuItem value="PST">PST</SelectMenuItem>
+                        <SelectMenuItem value="EST">EST</SelectMenuItem>
+                        <SelectMenuItem value="JST">JST</SelectMenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+
+            {/* Security Settings */}
+            <Grid item xs={12}>
+              <Paper 
+                elevation={0}
+                sx={{ 
+                  p: 3, 
+                  borderRadius: 3, 
+                  background: '#f8f9fa',
+                  border: '1px solid #e9ecef',
+                }}
+              >
+                <Box display="flex" alignItems="center" mb={2}>
+                  <Security sx={{ mr: 2, color: '#667eea' }} />
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    Security
+                  </Typography>
+                </Box>
+                
+                <FormControl fullWidth>
+                  <InputLabel>Auto Logout (minutes)</InputLabel>
+                  <Select
+                    value={preferences.autoLogout}
+                    label="Auto Logout (minutes)"
+                    onChange={(e) => handlePreferenceChange('autoLogout', e.target.value)}
+                  >
+                    <SelectMenuItem value={15}>15 minutes</SelectMenuItem>
+                    <SelectMenuItem value={30}>30 minutes</SelectMenuItem>
+                    <SelectMenuItem value={60}>1 hour</SelectMenuItem>
+                    <SelectMenuItem value={120}>2 hours</SelectMenuItem>
+                  </Select>
+                </FormControl>
+              </Paper>
+            </Grid>
+          </Grid>
+        </DialogContent>
+
+        <DialogActions sx={{ p: 3, pt: 0 }}>
+          <Button 
+            onClick={() => setPreferencesDialogOpen(false)}
+            sx={{ borderRadius: 2 }}
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSavePreferences}
+            variant="contained"
+            startIcon={<Save />}
+            sx={{
+              borderRadius: 2,
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+              },
+            }}
+          >
+            Save Preferences
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

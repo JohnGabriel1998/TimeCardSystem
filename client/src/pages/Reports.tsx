@@ -201,10 +201,11 @@ export default function Reports() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+        background: '#f5f5f5',
+        p: 3,
       }}
     >
-      {/* Header Section */}
+      {/* Modern Floating Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -216,83 +217,108 @@ export default function Reports() {
             p: 4,
             mb: 4,
             borderRadius: 4,
-            background: 'rgba(255, 255, 255, 0.9)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
+            background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+            color: 'white',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)',
+            },
           }}
         >
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Box display="flex" alignItems="center">
-              <Avatar
-                sx={{
-                  width: 60,
-                  height: 60,
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  mr: 3,
-                }}
-              >
-                <Assessment sx={{ fontSize: 30 }} />
-              </Avatar>
-              <Box>
-                <Typography
-                  variant="h4"
+          <Box position="relative" zIndex={1}>
+            <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={2}>
+              <Box display="flex" alignItems="center">
+                <Avatar
                   sx={{
-                    fontWeight: 700,
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    backgroundClip: 'text',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    mb: 0.5,
+                    width: 70,
+                    height: 70,
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    backdropFilter: 'blur(10px)',
+                    mr: 3,
                   }}
                 >
-                  Analytics & Reports
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
-                  Track your work performance and earnings insights
-                </Typography>
+                  <Assessment sx={{ fontSize: 36 }} />
+                </Avatar>
+                <Box>
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      fontWeight: 800,
+                      letterSpacing: '-0.02em',
+                      mb: 0.5,
+                    }}
+                  >
+                    📊 Analytics & Reports
+                  </Typography>
+                  <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 500 }}>
+                    Comprehensive insights into your work performance and earnings
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
-            <Box display="flex" gap={2}>
-              <Tooltip title="Export to CSV">
+              <Box display="flex" gap={2} flexWrap="wrap">
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   startIcon={<Download />}
                   onClick={handleExport}
                   sx={{
+                    py: 1.5,
+                    px: 3,
                     borderRadius: 3,
-                    borderColor: '#667eea',
-                    color: '#667eea',
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    backdropFilter: 'blur(10px)',
+                    color: 'white',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    textTransform: 'none',
                     '&:hover': {
-                      borderColor: '#5a6fd8',
-                      backgroundColor: alpha('#667eea', 0.1),
+                      background: 'rgba(255, 255, 255, 0.3)',
+                      transform: 'translateY(-2px)',
                     },
+                    transition: 'all 0.3s ease',
                   }}
                 >
                   Export CSV
                 </Button>
-              </Tooltip>
-              <Tooltip title="Print Report">
                 <Button
                   variant="contained"
                   startIcon={<Print />}
                   onClick={() => window.print()}
                   sx={{
+                    py: 1.5,
+                    px: 3,
                     borderRadius: 3,
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    backdropFilter: 'blur(10px)',
+                    color: 'white',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    textTransform: 'none',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                      background: 'rgba(255, 255, 255, 0.3)',
+                      transform: 'translateY(-2px)',
                     },
+                    transition: 'all 0.3s ease',
                   }}
                 >
-                  Print
+                  Print Report
                 </Button>
-              </Tooltip>
+              </Box>
             </Box>
           </Box>
         </Paper>
       </motion.div>
 
-      {/* Filters Section */}
+      {/* Enhanced Filters Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -301,26 +327,51 @@ export default function Reports() {
         <Paper
           elevation={0}
           sx={{
-            p: 3,
+            p: 4,
             mb: 4,
             borderRadius: 4,
-            background: 'rgba(255, 255, 255, 0.9)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
           }}
         >
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              mb: 3, 
+              fontWeight: 700, 
+              color: '#333',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
+            <BarChartIcon sx={{ color: '#43e97b' }} />
+            Report Configuration
+          </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
               <FormControl fullWidth>
-                <InputLabel>Report Type</InputLabel>
+                <InputLabel sx={{ fontWeight: 600 }}>Report Type</InputLabel>
                 <Select
                   value={reportType}
                   label="Report Type"
                   onChange={(e) => handleReportTypeChange(e.target.value)}
                   sx={{
-                    borderRadius: 2,
+                    borderRadius: 3,
                     '& .MuiOutlinedInput-root': {
-                      borderRadius: 2,
+                      borderRadius: 3,
+                      '&:hover': {
+                        '& > fieldset': {
+                          borderColor: '#43e97b',
+                        },
+                      },
+                      '&.Mui-focused': {
+                        '& > fieldset': {
+                          borderColor: '#43e97b',
+                        },
+                      },
                     },
                   }}
                 >
@@ -339,7 +390,17 @@ export default function Reports() {
                 sx={{ 
                   width: '100%',
                   '& .MuiOutlinedInput-root': {
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    '&:hover': {
+                      '& > fieldset': {
+                        borderColor: '#43e97b',
+                      },
+                    },
+                    '&.Mui-focused': {
+                      '& > fieldset': {
+                        borderColor: '#43e97b',
+                      },
+                    },
                   },
                 }}
               />
@@ -352,7 +413,17 @@ export default function Reports() {
                 sx={{ 
                   width: '100%',
                   '& .MuiOutlinedInput-root': {
-                    borderRadius: 2,
+                    borderRadius: 3,
+                    '&:hover': {
+                      '& > fieldset': {
+                        borderColor: '#43e97b',
+                      },
+                    },
+                    '&.Mui-focused': {
+                      '& > fieldset': {
+                        borderColor: '#43e97b',
+                      },
+                    },
                   },
                 }}
               />
@@ -362,56 +433,69 @@ export default function Reports() {
       </motion.div>
 
       <Grid container spacing={3}>
-        {/* Summary Cards */}
+        {/* Enhanced Summary Cards */}
         <Grid item xs={12} md={3}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <Paper
+            <Card
               elevation={0}
               sx={{
                 borderRadius: 4,
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
                 overflow: 'hidden',
                 '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+                  transform: 'translateY(-8px)',
+                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
                 },
                 transition: 'all 0.3s ease',
               }}
             >
               <Box
                 sx={{
-                  p: 3,
+                  p: 4,
                   background: 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)',
                   color: 'white',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                  },
                 }}
               >
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Box>
-                    <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
-                      {reportData.totalHours.toFixed(1)}h
-                    </Typography>
-                    <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
-                      Total Hours Worked
-                    </Typography>
-                  </Box>
+                <Box position="relative" zIndex={1} textAlign="center">
                   <Avatar
                     sx={{
+                      width: 56,
+                      height: 56,
                       backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                      width: 50,
-                      height: 50,
+                      backdropFilter: 'blur(10px)',
+                      mx: 'auto',
+                      mb: 2,
                     }}
                   >
-                    <AccessTime sx={{ fontSize: 24 }} />
+                    <AccessTime sx={{ fontSize: 28 }} />
                   </Avatar>
+                  <Typography variant="h3" sx={{ fontWeight: 800, mb: 1 }}>
+                    {reportData.totalHours.toFixed(1)}h
+                  </Typography>
+                  <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 500 }}>
+                    Total Hours Worked
+                  </Typography>
                 </Box>
               </Box>
-            </Paper>
+            </Card>
           </motion.div>
         </Grid>
 
@@ -421,49 +505,62 @@ export default function Reports() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <Paper
+            <Card
               elevation={0}
               sx={{
                 borderRadius: 4,
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
                 overflow: 'hidden',
                 '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+                  transform: 'translateY(-8px)',
+                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
                 },
                 transition: 'all 0.3s ease',
               }}
             >
               <Box
                 sx={{
-                  p: 3,
+                  p: 4,
                   background: 'linear-gradient(135deg, #4caf50 0%, #388e3c 100%)',
                   color: 'white',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                  },
                 }}
               >
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Box>
-                    <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
-                      ¥{reportData.totalEarnings.toLocaleString()}
-                    </Typography>
-                    <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
-                      Total Earnings
-                    </Typography>
-                  </Box>
+                <Box position="relative" zIndex={1} textAlign="center">
                   <Avatar
                     sx={{
+                      width: 56,
+                      height: 56,
                       backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                      width: 50,
-                      height: 50,
+                      backdropFilter: 'blur(10px)',
+                      mx: 'auto',
+                      mb: 2,
                     }}
                   >
-                    <AttachMoney sx={{ fontSize: 24 }} />
+                    <AttachMoney sx={{ fontSize: 28 }} />
                   </Avatar>
+                  <Typography variant="h3" sx={{ fontWeight: 800, mb: 1 }}>
+                    ¥{reportData.totalEarnings.toLocaleString()}
+                  </Typography>
+                  <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 500 }}>
+                    Total Earnings
+                  </Typography>
                 </Box>
               </Box>
-            </Paper>
+            </Card>
           </motion.div>
         </Grid>
 
@@ -473,49 +570,62 @@ export default function Reports() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            <Paper
+            <Card
               elevation={0}
               sx={{
                 borderRadius: 4,
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
                 overflow: 'hidden',
                 '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+                  transform: 'translateY(-8px)',
+                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
                 },
                 transition: 'all 0.3s ease',
               }}
             >
               <Box
                 sx={{
-                  p: 3,
+                  p: 4,
                   background: 'linear-gradient(135deg, #ff9800 0%, #f57c00 100%)',
                   color: 'white',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                  },
                 }}
               >
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Box>
-                    <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
-                      {reportData.daysWorked}
-                    </Typography>
-                    <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
-                      Days Worked
-                    </Typography>
-                  </Box>
+                <Box position="relative" zIndex={1} textAlign="center">
                   <Avatar
                     sx={{
+                      width: 56,
+                      height: 56,
                       backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                      width: 50,
-                      height: 50,
+                      backdropFilter: 'blur(10px)',
+                      mx: 'auto',
+                      mb: 2,
                     }}
                   >
-                    <CalendarToday sx={{ fontSize: 24 }} />
+                    <CalendarToday sx={{ fontSize: 28 }} />
                   </Avatar>
+                  <Typography variant="h3" sx={{ fontWeight: 800, mb: 1 }}>
+                    {reportData.daysWorked}
+                  </Typography>
+                  <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 500 }}>
+                    Days Worked
+                  </Typography>
                 </Box>
               </Box>
-            </Paper>
+            </Card>
           </motion.div>
         </Grid>
 
@@ -525,83 +635,109 @@ export default function Reports() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
           >
-            <Paper
+            <Card
               elevation={0}
               sx={{
                 borderRadius: 4,
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
                 overflow: 'hidden',
                 '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+                  transform: 'translateY(-8px)',
+                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
                 },
                 transition: 'all 0.3s ease',
               }}
             >
               <Box
                 sx={{
-                  p: 3,
+                  p: 4,
                   background: 'linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%)',
                   color: 'white',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                  },
                 }}
               >
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Box>
-                    <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
-                      {reportData.averageHoursPerDay.toFixed(1)}h
-                    </Typography>
-                    <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>
-                      Avg Hours/Day
-                    </Typography>
-                  </Box>
+                <Box position="relative" zIndex={1} textAlign="center">
                   <Avatar
                     sx={{
+                      width: 56,
+                      height: 56,
                       backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                      width: 50,
-                      height: 50,
+                      backdropFilter: 'blur(10px)',
+                      mx: 'auto',
+                      mb: 2,
                     }}
                   >
-                    <TrendingUp sx={{ fontSize: 24 }} />
+                    <TrendingUp sx={{ fontSize: 28 }} />
                   </Avatar>
+                  <Typography variant="h3" sx={{ fontWeight: 800, mb: 1 }}>
+                    {reportData.averageHoursPerDay.toFixed(1)}h
+                  </Typography>
+                  <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 500 }}>
+                    Avg Hours/Day
+                  </Typography>
                 </Box>
               </Box>
-            </Paper>
+            </Card>
           </motion.div>
         </Grid>
 
-        {/* Charts */}
+        {/* Enhanced Charts Section */}
         <Grid item xs={12} md={6}>
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
           >
-            <Paper 
+            <Card 
               elevation={0}
               sx={{ 
-                p: 3, 
-                height: 400,
+                p: 4, 
+                height: 420,
                 borderRadius: 4,
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+                '&:hover': {
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                },
+                transition: 'all 0.3s ease',
               }}
             >
               <Box display="flex" alignItems="center" mb={3}>
                 <Avatar
                   sx={{
-                    backgroundColor: alpha('#667eea', 0.1),
-                    color: '#667eea',
+                    backgroundColor: 'rgba(67, 233, 123, 0.1)',
+                    color: '#43e97b',
                     mr: 2,
+                    width: 48,
+                    height: 48,
                   }}
                 >
-                  <BarChartIcon />
+                  <BarChartIcon sx={{ fontSize: 24 }} />
                 </Avatar>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Hours Distribution
-                </Typography>
+                <Box>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#333' }}>
+                    📊 Hours Distribution
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Regular vs Night Shift Hours
+                  </Typography>
+                </Box>
               </Box>
               <ResponsiveContainer width="100%" height="85%">
                 <PieChart>
@@ -611,7 +747,7 @@ export default function Reports() {
                     cy="50%"
                     labelLine={false}
                     label={(entry) => `${entry.name}: ${entry.value.toFixed(1)}h`}
-                    outerRadius={80}
+                    outerRadius={100}
                     fill="#8884d8"
                     dataKey="value"
                   >
@@ -619,10 +755,18 @@ export default function Reports() {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <RechartsTooltip />
+                  <RechartsTooltip 
+                    contentStyle={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      border: 'none',
+                      borderRadius: '12px',
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+                      backdropFilter: 'blur(10px)',
+                    }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
-            </Paper>
+            </Card>
           </motion.div>
         </Grid>
 
@@ -632,128 +776,163 @@ export default function Reports() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}
           >
-            <Paper 
+            <Card 
               elevation={0}
               sx={{ 
-                p: 3, 
-                height: 400,
+                p: 4, 
+                height: 420,
                 borderRadius: 4,
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+                '&:hover': {
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                },
+                transition: 'all 0.3s ease',
               }}
             >
               <Box display="flex" alignItems="center" mb={3}>
                 <Avatar
                   sx={{
-                    backgroundColor: alpha('#4caf50', 0.1),
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
                     color: '#4caf50',
                     mr: 2,
+                    width: 48,
+                    height: 48,
                   }}
                 >
-                  <TrendingUp />
+                  <TrendingUp sx={{ fontSize: 24 }} />
                 </Avatar>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Daily Earnings Trend
-                </Typography>
+                <Box>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#333' }}>
+                    📈 Daily Earnings Trend
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Track your daily earning patterns
+                  </Typography>
+                </Box>
               </Box>
               <ResponsiveContainer width="100%" height="85%">
                 <LineChart data={dailyData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={alpha('#000', 0.1)} />
-                  <XAxis dataKey="date" stroke="#666" />
-                  <YAxis stroke="#666" />
+                  <CartesianGrid strokeDasharray="3 3" stroke={alpha('#43e97b', 0.2)} />
+                  <XAxis dataKey="date" stroke="#666" fontSize={12} />
+                  <YAxis stroke="#666" fontSize={12} />
                   <RechartsTooltip 
                     contentStyle={{
                       backgroundColor: 'rgba(255, 255, 255, 0.95)',
                       border: 'none',
                       borderRadius: '12px',
                       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+                      backdropFilter: 'blur(10px)',
                     }}
+                    labelStyle={{ color: '#333', fontWeight: 600 }}
                   />
                   <Line 
                     type="monotone" 
                     dataKey="earnings" 
                     stroke="#4caf50" 
-                    strokeWidth={3}
-                    dot={{ fill: '#4caf50', strokeWidth: 2, r: 4 }}
-                    activeDot={{ r: 6, stroke: '#4caf50', strokeWidth: 2 }}
+                    strokeWidth={4}
+                    dot={{ fill: '#4caf50', strokeWidth: 3, r: 6 }}
+                    activeDot={{ r: 8, stroke: '#4caf50', strokeWidth: 3, fill: '#fff' }}
                   />
                 </LineChart>
               </ResponsiveContainer>
-            </Paper>
+            </Card>
           </motion.div>
         </Grid>
 
-        {/* Detailed Table */}
+        {/* Enhanced Detailed Table */}
         <Grid item xs={12}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
           >
-            <Paper 
+            <Card 
               elevation={0}
               sx={{ 
                 borderRadius: 4,
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
                 overflow: 'hidden',
               }}
             >
               <Box
                 sx={{
-                  p: 3,
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  p: 4,
+                  background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
                   color: 'white',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                  },
                 }}
               >
-                <Box display="flex" alignItems="center">
+                <Box position="relative" zIndex={1} display="flex" alignItems="center">
                   <Avatar
                     sx={{
                       backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                      mr: 2,
+                      backdropFilter: 'blur(10px)',
+                      mr: 3,
+                      width: 56,
+                      height: 56,
                     }}
                   >
-                    <Visibility />
+                    <Visibility sx={{ fontSize: 28 }} />
                   </Avatar>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Detailed Time Cards Report
-                  </Typography>
+                  <Box>
+                    <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: '-0.02em' }}>
+                      📋 Detailed Time Cards Report
+                    </Typography>
+                    <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 500, mt: 0.5 }}>
+                      Complete breakdown of all your work sessions
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
               
-              <Box sx={{ p: 3 }}>
+              <Box sx={{ p: 4 }}>
                 <TableContainer>
-                  <Table size="small">
+                  <Table size="medium">
                     <TableHead>
                       <TableRow>
-                        <TableCell sx={{ fontWeight: 600, backgroundColor: alpha('#667eea', 0.1) }}>
-                          Date
+                        <TableCell sx={{ fontWeight: 700, backgroundColor: 'rgba(67, 233, 123, 0.1)', fontSize: '1rem', py: 2 }}>
+                          📅 Date
                         </TableCell>
-                        <TableCell sx={{ fontWeight: 600, backgroundColor: alpha('#667eea', 0.1) }}>
-                          Time In
+                        <TableCell sx={{ fontWeight: 700, backgroundColor: 'rgba(67, 233, 123, 0.1)', fontSize: '1rem', py: 2 }}>
+                          🕐 Time In
                         </TableCell>
-                        <TableCell sx={{ fontWeight: 600, backgroundColor: alpha('#667eea', 0.1) }}>
-                          Time Out
+                        <TableCell sx={{ fontWeight: 700, backgroundColor: 'rgba(67, 233, 123, 0.1)', fontSize: '1rem', py: 2 }}>
+                          🕐 Time Out
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 600, backgroundColor: alpha('#667eea', 0.1) }}>
-                          Regular Hours
+                        <TableCell align="right" sx={{ fontWeight: 700, backgroundColor: 'rgba(67, 233, 123, 0.1)', fontSize: '1rem', py: 2 }}>
+                          ⏰ Regular Hours
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 600, backgroundColor: alpha('#667eea', 0.1) }}>
-                          Night Hours
+                        <TableCell align="right" sx={{ fontWeight: 700, backgroundColor: 'rgba(67, 233, 123, 0.1)', fontSize: '1rem', py: 2 }}>
+                          🌙 Night Hours
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 600, backgroundColor: alpha('#667eea', 0.1) }}>
-                          Total Hours
+                        <TableCell align="right" sx={{ fontWeight: 700, backgroundColor: 'rgba(67, 233, 123, 0.1)', fontSize: '1rem', py: 2 }}>
+                          📊 Total Hours
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 600, backgroundColor: alpha('#667eea', 0.1) }}>
-                          Regular Pay
+                        <TableCell align="right" sx={{ fontWeight: 700, backgroundColor: 'rgba(67, 233, 123, 0.1)', fontSize: '1rem', py: 2 }}>
+                          💰 Regular Pay
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 600, backgroundColor: alpha('#667eea', 0.1) }}>
-                          Night Pay
+                        <TableCell align="right" sx={{ fontWeight: 700, backgroundColor: 'rgba(67, 233, 123, 0.1)', fontSize: '1rem', py: 2 }}>
+                          🌙 Night Pay
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 600, backgroundColor: alpha('#667eea', 0.1) }}>
-                          Total Pay
+                        <TableCell align="right" sx={{ fontWeight: 700, backgroundColor: 'rgba(67, 233, 123, 0.1)', fontSize: '1rem', py: 2 }}>
+                          💵 Total Pay
                         </TableCell>
                       </TableRow>
                     </TableHead>
@@ -763,93 +942,108 @@ export default function Reports() {
                           key={tc._id}
                           sx={{
                             '&:nth-of-type(odd)': {
-                              backgroundColor: alpha('#667eea', 0.03),
+                              backgroundColor: 'rgba(67, 233, 123, 0.03)',
                             },
                             '&:hover': {
-                              backgroundColor: alpha('#667eea', 0.08),
+                              backgroundColor: 'rgba(67, 233, 123, 0.08)',
+                              transform: 'translateY(-1px)',
                             },
-                            transition: 'background-color 0.2s ease',
+                            transition: 'all 0.2s ease',
                           }}
                         >
-                          <TableCell>
+                          <TableCell sx={{ py: 2.5 }}>
                             <Box display="flex" alignItems="center">
-                              <CalendarToday sx={{ fontSize: 16, mr: 1, color: '#667eea' }} />
-                              {format(new Date(tc.date), 'MMM dd, yyyy')}
+                              <CalendarToday sx={{ fontSize: 18, mr: 2, color: '#43e97b' }} />
+                              <Typography sx={{ fontWeight: 600 }}>
+                                {format(new Date(tc.date), 'MMM dd, yyyy')}
+                              </Typography>
                             </Box>
                           </TableCell>
-                          <TableCell>
+                          <TableCell sx={{ py: 2.5 }}>
                             <Chip 
                               label={format(new Date(tc.timeIn), 'HH:mm')}
-                              size="small"
+                              size="medium"
                               sx={{ 
-                                backgroundColor: alpha('#4caf50', 0.1),
+                                backgroundColor: 'rgba(76, 175, 80, 0.1)',
                                 color: '#4caf50',
-                                fontWeight: 600,
+                                fontWeight: 700,
+                                borderRadius: 3,
                               }}
                             />
                           </TableCell>
-                          <TableCell>
+                          <TableCell sx={{ py: 2.5 }}>
                             {tc.timeOut ? (
                               <Chip 
                                 label={format(new Date(tc.timeOut), 'HH:mm')}
-                                size="small"
+                                size="medium"
                                 sx={{ 
-                                  backgroundColor: alpha('#f44336', 0.1),
+                                  backgroundColor: 'rgba(244, 67, 54, 0.1)',
                                   color: '#f44336',
-                                  fontWeight: 600,
+                                  fontWeight: 700,
+                                  borderRadius: 3,
                                 }}
                               />
                             ) : (
                               <Chip 
-                                label="-"
-                                size="small"
+                                label="In Progress"
+                                size="medium"
                                 sx={{ 
-                                  backgroundColor: alpha('#666', 0.1),
-                                  color: '#666',
+                                  backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                                  color: '#ff9800',
+                                  fontWeight: 700,
+                                  borderRadius: 3,
                                 }}
                               />
                             )}
                           </TableCell>
-                          <TableCell align="right" sx={{ fontWeight: 600 }}>
+                          <TableCell align="right" sx={{ fontWeight: 700, py: 2.5, fontSize: '1rem' }}>
                             {tc.regularHours.toFixed(2)}h
                           </TableCell>
-                          <TableCell align="right" sx={{ fontWeight: 600 }}>
+                          <TableCell align="right" sx={{ fontWeight: 700, py: 2.5, fontSize: '1rem' }}>
                             {tc.nightShiftHours.toFixed(2)}h
                           </TableCell>
-                          <TableCell align="right" sx={{ fontWeight: 600, color: '#1976d2' }}>
+                          <TableCell align="right" sx={{ fontWeight: 700, color: '#1976d2', py: 2.5, fontSize: '1.1rem' }}>
                             {tc.totalHours.toFixed(2)}h
                           </TableCell>
-                          <TableCell align="right" sx={{ fontWeight: 600, color: '#4caf50' }}>
+                          <TableCell align="right" sx={{ fontWeight: 700, color: '#4caf50', py: 2.5, fontSize: '1rem' }}>
                             ¥{tc.regularPay.toLocaleString()}
                           </TableCell>
-                          <TableCell align="right" sx={{ fontWeight: 600, color: '#9c27b0' }}>
+                          <TableCell align="right" sx={{ fontWeight: 700, color: '#9c27b0', py: 2.5, fontSize: '1rem' }}>
                             ¥{tc.nightShiftPay.toLocaleString()}
                           </TableCell>
-                          <TableCell align="right" sx={{ fontWeight: 700, color: '#667eea', fontSize: '1.1rem' }}>
+                          <TableCell align="right" sx={{ fontWeight: 800, color: '#43e97b', py: 2.5, fontSize: '1.2rem' }}>
                             ¥{tc.totalPay.toLocaleString()}
                           </TableCell>
                         </TableRow>
                       ))}
-                      <TableRow sx={{ backgroundColor: alpha('#667eea', 0.1) }}>
-                        <TableCell colSpan={3} sx={{ fontWeight: 700, fontSize: '1.1rem' }}>
-                          📊 TOTAL SUMMARY
+                      <TableRow 
+                        sx={{ 
+                          backgroundColor: 'linear-gradient(135deg, rgba(67, 233, 123, 0.2) 0%, rgba(56, 249, 215, 0.2) 100%)',
+                          '& .MuiTableCell-root': {
+                            borderBottom: 'none',
+                            py: 3,
+                          },
+                        }}
+                      >
+                        <TableCell colSpan={3} sx={{ fontWeight: 800, fontSize: '1.3rem', color: '#43e97b' }}>
+                          📊 GRAND TOTAL SUMMARY
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 700, fontSize: '1rem' }}>
+                        <TableCell align="right" sx={{ fontWeight: 800, fontSize: '1.1rem', color: '#333' }}>
                           {reportData.totalRegularHours.toFixed(2)}h
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 700, fontSize: '1rem' }}>
+                        <TableCell align="right" sx={{ fontWeight: 800, fontSize: '1.1rem', color: '#333' }}>
                           {reportData.totalNightHours.toFixed(2)}h
                         </TableCell>
                         <TableCell align="right" sx={{ fontWeight: 700, fontSize: '1rem', color: '#1976d2' }}>
                           {reportData.totalHours.toFixed(2)}h
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 700, fontSize: '1rem', color: '#4caf50' }}>
+                        <TableCell align="right" sx={{ fontWeight: 800, fontSize: '1.1rem', color: '#4caf50' }}>
                           ¥{reportData.totalRegularPay.toLocaleString()}
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 700, fontSize: '1rem', color: '#9c27b0' }}>
+                        <TableCell align="right" sx={{ fontWeight: 800, fontSize: '1.1rem', color: '#9c27b0' }}>
                           ¥{reportData.totalNightPay.toLocaleString()}
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 700, fontSize: '1.2rem', color: '#667eea' }}>
+                        <TableCell align="right" sx={{ fontWeight: 900, fontSize: '1.4rem', color: '#43e97b' }}>
                           ¥{reportData.totalEarnings.toLocaleString()}
                         </TableCell>
                       </TableRow>
@@ -857,7 +1051,7 @@ export default function Reports() {
                   </Table>
                 </TableContainer>
               </Box>
-            </Paper>
+            </Card>
           </motion.div>
         </Grid>
       </Grid>
